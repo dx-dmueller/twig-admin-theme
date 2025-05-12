@@ -9,7 +9,6 @@
             this.initialImages = this.$form.data("initial-images") || []
             this.isReadOnly = this.$form.data("readonly") === "true"
             this.imageMap = new Map()
-            this.currentDraggedId = null
             this._cacheElements()
             if (!this.isReadOnly) {
                 this._bindEvents()
@@ -39,12 +38,10 @@
                 forcePlaceholderSize: true,
                 tolerance: "pointer",
                 start: (e, ui) => {
-                    this.currentDraggedId = ui.item.data("id")
                     ui.item.addClass("ap-dragging")
                 },
                 stop: (e, ui) => {
                     ui.item.removeClass("ap-dragging")
-                    this.currentDraggedId = null
                 },
                 over: (e, ui) => {
                     ui.placeholder.appendTo(this.$grid)
@@ -173,21 +170,48 @@
         _createItem(imgObj) {
             let overlay = ""
             if (!this.isReadOnly) {
-                overlay = '<div class="ap-overlay"><div class="ap-top-buttons"><button type="button" class="ap-set-cover-btn"><svg class="ap-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5-7l-3 3.72L9 13l-3 4h12l-4-5z"/></svg></button><button type="button" class="ap-set-icon-btn"><svg class="ap-icon" viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7V5h10v14zm-2-7H9v5h6v-5z"/></svg></button><button type="button" class="ap-remove-btn"><svg class="ap-icon" viewBox="0 0 24 24"><path d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"/></svg></button></div><div class="ap-bottom-button"><button type="button" class="ap-toggle-active-btn"><svg class="ap-icon" viewBox="0 0 24 24"><path d="M17,7A5,5 0 0,1 22,12A5,5 0 0,1 17,17H7A5,5 0 0,1 2,12A5,5 0 0,1 7,7H17M17,15A3,3 0 0,0 20,12A3,3 0 0,0 17,9A3,3 0 0,0 14,12A3,3 0 0,0 17,15Z"/></svg></button></div></div>'
+                overlay =
+                    '<div class="ap-overlay">' +
+                    '<div class="ap-top-buttons">' +
+                    '<button type="button" class="ap-set-cover-btn">' +
+                    '<svg class="ap-icon" viewBox="0 0 24 24">' +
+                    '<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5-7l-3 3.72L9 13l-3 4h12l-4-5z"/>' +
+                    '</svg>' +
+                    '</button>' +
+                    '<button type="button" class="ap-set-icon-btn">' +
+                    '<svg class="ap-icon" viewBox="0 0 24 24">' +
+                    '<path d="M17 3H7c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7V5h10v14zm-2-7H9v5h6v-5z"/>' +
+                    '</svg>' +
+                    '</button>' +
+                    '<button type="button" class="ap-remove-btn">' +
+                    '<svg class="ap-icon" viewBox="0 0 24 24">' +
+                    '<path d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"/>' +
+                    '</svg>' +
+                    '</button>' +
+                    '</div>' +
+                    '<div class="ap-bottom-button">' +
+                    '<button type="button" class="ap-toggle-active-btn">' +
+                    '<svg class="ap-icon" viewBox="0 0 24 24">' +
+                    '<path d="M17,7A5,5 0 0,1 22,12A5,5 0 0,1 17,17H7A5,5 0 0,1 2,12A5,5 0 0,1 7,7H17M17,15A3,3 0 0,0 20,12A3,3 0 0,0 17,9A3,3 0 0,0 14,12A3,3 0 0,0 17,15Z"/>' +
+                    '</svg>' +
+                    '</button>' +
+                    '</div>' +
+                    '</div>'
             }
             return $(
-                '<div class="ap-item" data-id="' +
-                imgObj.id +
-                '" data-status="' +
-                imgObj.status +
-                '" data-active="' +
-                (imgObj.active ? "true" : "false") +
-                '">' +
-                '<div class="ap-loading-spinner"><svg class="ap-spinner-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke-width="2" stroke-dasharray="42" stroke-dashoffset="15"></circle></svg></div>' +
+                '<div class="ap-item" data-id="' + imgObj.id + '" ' +
+                'data-status="' + imgObj.status + '" ' +
+                'data-active="' + (imgObj.active ? "true" : "false") + '">' +
+                '<div class="ap-loading-spinner">' +
+                '<svg class="ap-spinner-icon" viewBox="0 0 24 24">' +
+                '<circle cx="12" cy="12" r="10" fill="none" stroke-width="2" ' +
+                'stroke-dasharray="42" stroke-dashoffset="15"></circle>' +
+                '</svg>' +
+                '</div>' +
                 '<img alt="">' +
                 overlay +
                 '<div class="ap-badge-container"></div>' +
-                "</div>"
+                '</div>'
             )
         },
         _updateItem(obj) {
@@ -250,12 +274,12 @@
                 orderData[id] = index
             })
             try {
-                const response = await this._request("updateOrder", {
+                const response = await this._request("updateMediaOrder", {
                     productId: this.productId,
                     order: orderData
                 })
-                if (!response.success) {
-                    this._showError(response.error || "Failed to update sort order")
+                if (!response || !response.success) {
+                    this._showError(response && response.error ? response.error : "Failed to update sort order")
                 }
             } catch (err) {
                 this._showError(err.statusText || "Failed to update sort order")
@@ -275,7 +299,7 @@
             if (!toUpload.length) return
             try {
                 const response = await this._request("addMedia", { productId: this.productId }, toUpload)
-                if (!response.success || !Array.isArray(response.items)) {
+                if (!Array.isArray(response)) {
                     for (const item of toUpload) {
                         const obj = this._getImageObj(item.tempId)
                         if (obj) {
@@ -284,17 +308,19 @@
                             this._removeImgDOM(item.tempId)
                         }
                     }
-                    this._showError(response.error || "Invalid server response")
+                    this._showError("Invalid server response")
                     return
                 }
-                const items = response.items
+                const items = response
                 const uploadErrors = []
                 for (const uploadItem of items) {
                     const localObj = this._getImageObj(uploadItem.tempId)
-                    if (!localObj) continue
+                    if (!localObj) {
+                        continue
+                    }
                     if (!uploadItem.success || !uploadItem.id) {
                         localObj.status = "error"
-                        uploadErrors.push(uploadItem.error && uploadItem.error.message ? uploadItem.error.message : "Upload failed")
+                        uploadErrors.push(uploadItem.error ? uploadItem.error : "Upload failed")
                         this._removeImgDOM(uploadItem.tempId)
                     } else {
                         const newObj = {
@@ -336,9 +362,9 @@
             $el.fadeOut(150, async () => {
                 this._removeImgDOM(fileId)
                 try {
-                    const response = await this._request("remove", { productMediaId: fileId })
-                    if (!response.success) {
-                        this._showError(response.error || "Failed to remove image")
+                    const response = await this._request("removeMedia", { productMediaId: fileId })
+                    if (!response || !response.success) {
+                        this._showError(response && response.error ? response.error : "Failed to remove image")
                     }
                 } catch (err) {
                     this._showError(err.statusText || "Failed to remove image")
@@ -381,12 +407,12 @@
             try {
                 let response
                 if (type === "thumbnail") {
-                    response = await this._request("setThumb", { productMediaId: fileId })
+                    response = await this._request("setProductThumbnail", { productMediaId: fileId })
                 } else {
-                    response = await this._request("setIcon", { productMediaId: fileId })
+                    response = await this._request("setProductIcon", { productMediaId: fileId })
                 }
-                if (!response.success) {
-                    this._showError(response.error || "Failed to set special image")
+                if (!response || !response.success) {
+                    this._showError(response && response.error ? response.error : "Failed to set special image")
                 }
             } catch (err) {
                 this._showError(err.statusText || "Failed to set special image")
@@ -399,14 +425,14 @@
             obj.active = !obj.active
             this._updateItem(obj)
             try {
-                const response = await this._request("toggleActive", {
+                const response = await this._request("updateMediaActiveState", {
                     productMediaId: fileId,
                     active: obj.active ? 1 : 0
                 })
-                if (!response.success) {
+                if (!response || !response.success) {
                     obj.active = oldActive
                     this._updateItem(obj)
-                    this._showError(response.error || "Failed to toggle image activity")
+                    this._showError(response && response.error ? response.error : "Failed to toggle image activity")
                 }
             } catch (err) {
                 obj.active = oldActive
@@ -483,20 +509,6 @@
                 $("<li>").text(msg).appendTo($ul)
             })
             this.$errorMessages.append($ul).show()
-        },
-        _destroy() {
-            if (!this.isReadOnly) {
-                this.$grid.sortable("destroy")
-                this.$closeErrorBtn.off("click")
-                this.$modalClose.off("click")
-                this.$modal.off("click")
-                this.$browseButton.off("click")
-                this.$fileInput.off("change")
-                this.$grid.off("click")
-                this.$thumbPlaceholder.off("click")
-                this.$iconPlaceholder.off("click")
-                this.$dropZone.off("dragenter dragover dragleave drop")
-            }
         }
     })
 })(jQuery)
