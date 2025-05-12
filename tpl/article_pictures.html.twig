@@ -29,8 +29,6 @@
             method="post"
             data-ajax-base-url="{{ oViewConf.getAjaxLink()|raw }}&container=article_pictures"
             data-initial-images="{{ productImages|default([])|json_encode|escape('html_attr') }}"
-            data-thumbnail-id="{{ thumbnailId|default('')|escape('html_attr') }}"
-            data-icon-id="{{ iconId|default('')|escape('html_attr') }}"
     >
         {{ oViewConf.getHiddenSid()|raw }}
         <input type="hidden" name="cl" value="article_pictures">
@@ -69,8 +67,8 @@
                             <h5>{{ "GENERAL_THUMB"|translate }}</h5>
                             <div id="ap-thumbnail-placeholder" class="ap-cover-placeholder" data-type="thumbnail">
                                 <svg class="ap-icon" viewBox="0 0 24 24">
-                                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9
-                                    2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0
+                                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2
+                                    2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0
                                     16H5V5h14v14zm-5-7l-3
                                     3.72L9 13l-3 4h12l-4-5z"/>
                                 </svg>
