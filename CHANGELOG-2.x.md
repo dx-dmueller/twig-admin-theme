@@ -1,5 +1,10 @@
 # Change Log for OXID Twig admin theme
 
+## v2.6.2 - Unreleased
+
+### Added
+- Missing VAT number prefix input in country form
+
 ## v2.6.1 - 2025-05-14
 
 ### Fixed
